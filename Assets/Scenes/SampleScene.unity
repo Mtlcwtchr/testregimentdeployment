@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 477052722}
   - component: {fileID: 477052721}
   m_Layer: 0
-  m_Name: EnemyRegiment2 (1)
+  m_Name: AllyRegiment2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -672,7 +672,7 @@ GameObject:
   - component: {fileID: 1034891118}
   - component: {fileID: 1034891117}
   m_Layer: 0
-  m_Name: EnemyRegiment3 (1)
+  m_Name: AllyRegiment3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1066,7 +1066,7 @@ GameObject:
   - component: {fileID: 1885871690}
   - component: {fileID: 1885871689}
   m_Layer: 0
-  m_Name: EnemyRegiment1 (1)
+  m_Name: AllyRegiment1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
