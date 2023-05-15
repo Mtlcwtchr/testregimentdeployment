@@ -59,7 +59,7 @@ public class FrontlaneDeployer : MonoBehaviour
         }
 
         PutOutOfFormationsEnemyRegiments();
-        PutOutOfFormationsEnemyRegiments();
+        PutOutOfFormationsAllyRegiments();
     }
     
     private void GetLinks()

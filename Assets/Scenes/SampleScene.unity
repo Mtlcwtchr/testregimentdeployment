@@ -278,7 +278,7 @@ MonoBehaviour:
   battleUnitData: {fileID: 1957652606}
   formationData: {fileID: 8013549440776126423, guid: 0fa9b516798675749b37969a4c1fb8eb, type: 3}
   enemyToTheLeft: 0
-  maxFillDistance: 60
+  maxFillDistance: 30
 --- !u!4 &411086364
 Transform:
   m_ObjectHideFlags: 0
@@ -389,6 +389,50 @@ MonoBehaviour:
     regimentName: A2
   - type: 1
     boundsRect: {x: 5, y: 1}
+    isEnemy: 1
+    regimentName: A2
+  - type: 3
+    boundsRect: {x: 1, y: 1}
+    isEnemy: 1
+    regimentName: A2
+  - type: 3
+    boundsRect: {x: 1, y: 1}
+    isEnemy: 1
+    regimentName: A2
+  - type: 3
+    boundsRect: {x: 1, y: 1}
+    isEnemy: 1
+    regimentName: A2
+  - type: 3
+    boundsRect: {x: 1, y: 1}
+    isEnemy: 1
+    regimentName: A2
+  - type: 3
+    boundsRect: {x: 1, y: 1}
+    isEnemy: 1
+    regimentName: A2
+  - type: 3
+    boundsRect: {x: 1, y: 1}
+    isEnemy: 1
+    regimentName: A2
+  - type: 3
+    boundsRect: {x: 1, y: 1}
+    isEnemy: 1
+    regimentName: A2
+  - type: 3
+    boundsRect: {x: 1, y: 1}
+    isEnemy: 1
+    regimentName: A2
+  - type: 3
+    boundsRect: {x: 1, y: 1}
+    isEnemy: 1
+    regimentName: A2
+  - type: 3
+    boundsRect: {x: 1, y: 1}
+    isEnemy: 1
+    regimentName: A2
+  - type: 3
+    boundsRect: {x: 1, y: 1}
     isEnemy: 1
     regimentName: A2
   regimentName: A2
@@ -526,7 +570,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 714036663}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.4, y: 0, z: -8.2}
+  m_LocalPosition: {x: -18.2, y: 0, z: -6.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1004,7 +1048,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1880326640}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 73.2, y: 1, z: 5.9}
+  m_LocalPosition: {x: -30.2, y: 1, z: 9.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
