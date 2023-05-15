@@ -9,5 +9,7 @@ namespace DefaultNamespace
         public Quaternion rotation;
         public Vector3 size;
         public bool enemy;
+
+        public UnitBattleInfo actualUnit;
     }
 }

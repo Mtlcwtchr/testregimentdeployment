@@ -15,7 +15,9 @@ public class FrontlaneDeployer : MonoBehaviour
     private List<UnitPlaceholder> enemyPlaceholders = new List<UnitPlaceholder>();
     private List<UnitPlaceholder> allyPlaceholders = new List<UnitPlaceholder>();
 
-    private bool enemyToTheLeft = true;
+    public bool enemyToTheLeft = false;
+
+    public float maxFillDistance = 10f;
 
     private List<Link> links = new List<Link>();
 
@@ -45,9 +47,19 @@ public class FrontlaneDeployer : MonoBehaviour
         {
             FillLinkWithEnemyPlaceholders(links[i]);
             FillLinkWithAllyPlaceholders(links[i]);
+
+            FillLinkPlaceholdersWithBestEnemyRegiments(links[i]);
+            FillLinkPlaceholdersWithBestAllyRegiments(links[i]);
         }
-        
-        //PutOutOfFormationsRegiments();
+
+        for (var i = 0; i < links.Count; i++)
+        {
+            FillEmptyPlaceholdersWithBestEnemyRegiments(links[i]);
+            FillEmptyPlaceholdersWithBestAllyRegiments(links[i]);
+        }
+
+        PutOutOfFormationsEnemyRegiments();
+        PutOutOfFormationsEnemyRegiments();
     }
     
     private void GetLinks()
@@ -161,7 +173,7 @@ public class FrontlaneDeployer : MonoBehaviour
                 };
 
                 link.enemyPlaceholders.Add(rgPlaceholder);
-                allyPlaceholders.Add(rgPlaceholder);
+                enemyPlaceholders.Add(rgPlaceholder);
             }
         }
     }
@@ -204,12 +216,12 @@ public class FrontlaneDeployer : MonoBehaviour
                 };
 
                 link.allyPlaceholders.Add(rgPlaceholder);
-                enemyPlaceholders.Add(rgPlaceholder);
+                allyPlaceholders.Add(rgPlaceholder);
             }
         }
     }
 
-    private void FillLinkPlacementsWithBestRegiments(Link link)
+    private void FillLinkPlaceholdersWithBestEnemyRegiments(Link link)
     {
         if (regimentsToPlace.Count < 1)
             return;
@@ -221,19 +233,474 @@ public class FrontlaneDeployer : MonoBehaviour
         {
             var candidate = regimentsToPlace[i];
             
-            if (candidate.isEnemy)
+            if (!candidate.isEnemy)
                 continue;
             
             if(candidate.unitsInRegiment.Count < 1)
                 continue;
 
-            if ((candidate.regimentPosition - linkCenter).magnitude < (regiment.regimentPosition - linkCenter).magnitude)
+            if (!regiment.isEnemy ||
+                (candidate.regimentPosition - linkCenter).magnitude < (regiment.regimentPosition - linkCenter).magnitude)
             {
                 regiment = candidate;
             }
         }
-        
-        
+
+        if (regiment.unitsInRegiment.Count < 1)
+            return;
+
+        if (!regiment.isEnemy)
+            return;
+
+        for (var i = 0; i < link.enemyPlaceholders.Count; ++i)
+        {
+            var placeholder = link.enemyPlaceholders[i];
+
+            if (link.filledPlaceholders.Contains(placeholder))
+                continue;
+
+            if (regiment.unitsInRegiment.Count < 1)
+                return;
+
+            for (var j = 0; j < regiment.unitsInRegiment.Count; ++j)
+            {
+                var unit = regiment.unitsInRegiment[j];
+                if (unit.type != placeholder.UnitType)
+                    continue;
+
+                // imitate fill unit into placeholder
+                placeholder.size = new Vector3(unit.boundsRect.y, 1, unit.boundsRect.x);
+                placeholder.actualUnit = unit;
+
+                regiment.unitsInRegiment.RemoveAt(j);
+                if (regiment.unitsInRegiment.Count < 1)
+                {
+                    regimentsToPlace.Remove(regiment);
+                }
+
+                link.filledPlaceholders.Add(placeholder);
+                break;
+            }
+        }
+    }
+
+    private void FillLinkPlaceholdersWithBestAllyRegiments(Link link)
+    {
+        if (regimentsToPlace.Count < 1)
+            return;
+
+        var linkCenter = (link.end + link.start) / 2f;
+
+        var regiment = regimentsToPlace[0];
+        for (var i = 0; i < regimentsToPlace.Count; i++)
+        {
+            var candidate = regimentsToPlace[i];
+
+            if (candidate.isEnemy)
+                continue;
+
+            if (candidate.unitsInRegiment.Count < 1)
+                continue;
+
+            if (regiment.isEnemy ||
+                (candidate.regimentPosition - linkCenter).magnitude < (regiment.regimentPosition - linkCenter).magnitude)
+            {
+                regiment = candidate;
+            }
+        }
+
+        if (regiment.unitsInRegiment.Count < 1)
+            return;
+
+        if (regiment.isEnemy)
+            return;
+
+        for (var i = 0; i < link.allyPlaceholders.Count; ++i)
+        {
+            var placeholder = link.allyPlaceholders[i];
+
+            if (link.filledPlaceholders.Contains(placeholder))
+                continue;
+
+            if (regiment.unitsInRegiment.Count < 1)
+                return;
+
+            for (var j = 0; j < regiment.unitsInRegiment.Count; ++j)
+            {
+                var unit = regiment.unitsInRegiment[j];
+                if (unit.type != placeholder.UnitType)
+                    continue;
+
+                // imitate fill unit into placeholder
+                placeholder.size = new Vector3(unit.boundsRect.y, 1, unit.boundsRect.x);
+                placeholder.actualUnit = unit;
+
+                regiment.unitsInRegiment.RemoveAt(j);
+                if(regiment.unitsInRegiment.Count < 1)
+                {
+                    regimentsToPlace.Remove(regiment);
+                }
+
+                link.filledPlaceholders.Add(placeholder);
+                break;
+            }
+        }
+    }
+
+    private void FillEmptyPlaceholdersWithBestEnemyRegiments(Link link)
+    {
+        if (regimentsToPlace.Count < 1)
+            return;
+
+        var linkCenter = (link.end + link.start) / 2f;
+
+        for (int i = 0; i < link.enemyPlaceholders.Count; ++i)
+        {
+            var placeholder = link.enemyPlaceholders[i];
+            if (link.filledPlaceholders.Contains(placeholder))
+                continue;
+
+            //find best regiment to fill
+            if (regimentsToPlace.Count < 1)
+                return;
+
+            var checkingRegiments = new List<RegimentInfo>();
+            checkingRegiments.AddRange(regimentsToPlace);
+
+            for(int j=0; j<checkingRegiments.Count; ++j)
+            {
+                var reg = checkingRegiments[j];
+
+                if(!reg.isEnemy)
+                {
+                    checkingRegiments.RemoveAt(j--);
+                    continue;
+                }
+
+                if(reg.unitsInRegiment.Count < 1)
+                {
+                    checkingRegiments.RemoveAt(j--);
+                    continue;
+                }
+
+                if ((reg.regimentPosition - linkCenter).magnitude > maxFillDistance)
+                {
+                    checkingRegiments.RemoveAt(j--);
+                    continue;
+                }
+
+                for (int k=j; k<checkingRegiments.Count; ++k)
+                {
+                    var cand = checkingRegiments[k];
+
+                    if (!cand.isEnemy)
+                    {
+                        checkingRegiments.RemoveAt(k--);
+                        continue;
+                    }
+
+                    if (cand.unitsInRegiment.Count < 1)
+                    {
+                        checkingRegiments.RemoveAt(k--);
+                        continue;
+                    }
+
+                    if ((cand.regimentPosition - linkCenter).magnitude > maxFillDistance)
+                    {
+                        checkingRegiments.RemoveAt(k--);
+                        continue;
+                    }
+
+                    if ((reg.regimentPosition - linkCenter).magnitude > (cand.regimentPosition - linkCenter).magnitude)
+                    {
+                        checkingRegiments[j] = cand;
+                        checkingRegiments[k] = reg;
+                    }
+                }
+            }
+
+            for(int j=0; j<checkingRegiments.Count; ++j)
+            {
+                var regiment = checkingRegiments[j];
+
+                if (regiment.unitsInRegiment.Count < 1)
+                {
+                    checkingRegiments.RemoveAt(j--);
+                    continue;
+                }
+
+                for(int k=0; k<regiment.unitsInRegiment.Count; ++k)
+                {
+                    var unit = regiment.unitsInRegiment[k];
+
+                    if (unit.type != placeholder.UnitType)
+                        continue;
+
+                    placeholder.size = new Vector3(unit.boundsRect.y, 1, unit.boundsRect.x);
+                    placeholder.actualUnit = unit;
+
+                    regiment.unitsInRegiment.RemoveAt(k);
+                    if (regiment.unitsInRegiment.Count < 1)
+                    {
+                        regimentsToPlace.Remove(regiment);
+                    }
+
+                    link.filledPlaceholders.Add(placeholder);
+                    break;
+                }
+            }
+        }
+    }
+
+    private void FillEmptyPlaceholdersWithBestAllyRegiments(Link link)
+    {
+        if (regimentsToPlace.Count < 1)
+            return;
+
+        var linkCenter = (link.end + link.start) / 2f;
+
+        for (int i = 0; i < link.allyPlaceholders.Count; ++i)
+        {
+            var placeholder = link.allyPlaceholders[i];
+            if (link.filledPlaceholders.Contains(placeholder))
+                continue;
+
+            //find best regiment to fill
+            if (regimentsToPlace.Count < 1)
+                return;
+
+            var checkingRegiments = new List<RegimentInfo>();
+            checkingRegiments.AddRange(regimentsToPlace);
+
+            for (int j = 0; j < checkingRegiments.Count; ++j)
+            {
+                var reg = checkingRegiments[j];
+
+                if (reg.isEnemy)
+                {
+                    checkingRegiments.RemoveAt(j--);
+                    continue;
+                }
+
+                if (reg.unitsInRegiment.Count < 1)
+                {
+                    checkingRegiments.RemoveAt(j--);
+                    continue;
+                }
+
+                if ((reg.regimentPosition - linkCenter).magnitude > maxFillDistance)
+                {
+                    checkingRegiments.RemoveAt(j--);
+                    continue;
+                }
+
+                for (int k = j; k < checkingRegiments.Count; ++k)
+                {
+                    var cand = checkingRegiments[k];
+
+                    if (cand.isEnemy)
+                    {
+                        checkingRegiments.RemoveAt(k--);
+                        continue;
+                    }
+
+                    if (cand.unitsInRegiment.Count < 1)
+                    {
+                        checkingRegiments.RemoveAt(k--);
+                        continue;
+                    }
+
+                    if ((cand.regimentPosition - linkCenter).magnitude > maxFillDistance)
+                    {
+                        checkingRegiments.RemoveAt(k--);
+                        continue;
+                    }
+
+                    if ((reg.regimentPosition - linkCenter).magnitude > (cand.regimentPosition - linkCenter).magnitude)
+                    {
+                        checkingRegiments[j] = cand;
+                        checkingRegiments[k] = reg;
+                    }
+                }
+            }
+
+            for (int j = 0; j < checkingRegiments.Count; ++j)
+            {
+                var regiment = checkingRegiments[j];
+
+                if (regiment.unitsInRegiment.Count < 1)
+                {
+                    checkingRegiments.RemoveAt(j--);
+                    continue;
+                }
+
+                for (int k = 0; k < regiment.unitsInRegiment.Count; ++k)
+                {
+                    var unit = regiment.unitsInRegiment[k];
+
+                    if (unit.type != placeholder.UnitType)
+                        continue;
+
+                    placeholder.size = new Vector3(unit.boundsRect.y, 1, unit.boundsRect.x);
+                    placeholder.actualUnit = unit;
+
+                    regiment.unitsInRegiment.RemoveAt(k);
+                    if (regiment.unitsInRegiment.Count < 1)
+                    {
+                        regimentsToPlace.Remove(regiment);
+                    }
+
+                    link.filledPlaceholders.Add(placeholder);
+                    break;
+                }
+            }
+        }
+    }
+
+    private void PutOutOfFormationsEnemyRegiments()
+    {
+        if (regimentsToPlace.Count < 1)
+            return;
+
+        var placeholders = new List<UnitPlaceholder>();
+        for(int i=0; i<regimentsToPlace.Count;++i)
+        {
+            var regiment = regimentsToPlace[i];
+
+            if (regiment.unitsInRegiment.Count < 1)
+                continue;
+
+            if (!regiment.isEnemy)
+                continue;
+
+            var link = links[0];
+            var linkCenter = (link.start + link.end) / 2f;
+
+            for (int j=0; j<links.Count; ++j)
+            {
+                var candidate = links[j];
+                var candidateCenter = (candidate.start + candidate.end) / 2f;
+
+                if((regiment.regimentPosition - linkCenter).magnitude > (regiment.regimentPosition - candidateCenter).magnitude)
+                {
+                    link = candidate;
+                    linkCenter = candidateCenter;
+                }
+            }
+
+            var linkDir = link.end - link.start;
+            var linkDirNormal = linkDir.normalized;
+            var linkLeftNormal = new Vector3(-linkDir.z, linkDir.y, linkDir.x).normalized * (enemyToTheLeft ? -1 : 1);
+
+            var placeholdersInRow = 0;
+            var placeholdersRowOffset = 0;
+            for (int k = 0; k < regiment.unitsInRegiment.Count; ++k)
+            {
+                var unit = regiment.unitsInRegiment[k];
+
+                var rowStart = link.start + linkLeftNormal * (formationData.betweenRowsDistance * (formationData.rows.Length + placeholdersRowOffset + 1));
+                var rowEnd = link.end + linkLeftNormal * (formationData.betweenRowsDistance * (formationData.rows.Length + placeholdersRowOffset + 1));
+
+                var pos = rowStart + ((placeholdersInRow+1) * unit.boundsRect.x * 1.6f) * linkDirNormal;
+
+                if ((pos - rowStart).magnitude > (rowEnd - rowStart).magnitude)
+                {
+                    placeholdersRowOffset++;
+                    placeholdersInRow = 0;
+                    rowStart = link.start + linkLeftNormal * (formationData.betweenRowsDistance * (formationData.rows.Length + placeholdersRowOffset + 1));
+                    pos = rowStart + ((placeholdersInRow + 1) * unit.boundsRect.x * 1.6f) * linkDirNormal;
+                }
+
+                var rgPlaceholder = new UnitPlaceholder()
+                {
+                    position = pos,
+                    UnitType = unit.type,
+                    size = new Vector3(unit.boundsRect.y, 1, unit.boundsRect.x),
+                    rotation = Quaternion.LookRotation(linkDirNormal, Vector3.up),
+                    actualUnit = unit,
+                    enemy = true,
+                };
+
+                link.enemyPlaceholders.Add(rgPlaceholder);
+                link.filledPlaceholders.Add(rgPlaceholder);
+                enemyPlaceholders.Add(rgPlaceholder);
+
+                placeholdersInRow++;
+            }
+        }
+    }
+
+    private void PutOutOfFormationsAllyRegiments()
+    {
+        if (regimentsToPlace.Count < 1)
+            return;
+
+        var placeholders = new List<UnitPlaceholder>();
+        for (int i = 0; i < regimentsToPlace.Count; ++i)
+        {
+            var regiment = regimentsToPlace[i];
+
+            if (regiment.unitsInRegiment.Count < 1)
+                continue;
+
+            if (regiment.isEnemy)
+                continue;
+
+            var link = links[0];
+            var linkCenter = (link.start + link.end) / 2f;
+
+            for (int j = 0; j < links.Count; ++j)
+            {
+                var candidate = links[j];
+                var candidateCenter = (candidate.start + candidate.end) / 2f;
+
+                if ((regiment.regimentPosition - linkCenter).magnitude > (regiment.regimentPosition - candidateCenter).magnitude)
+                {
+                    link = candidate;
+                    linkCenter = candidateCenter;
+                }
+            }
+
+            var linkDir = link.end - link.start;
+            var linkDirNormal = linkDir.normalized;
+            var linkLeftNormal = new Vector3(-linkDir.z, linkDir.y, linkDir.x).normalized * (enemyToTheLeft ? 1 : -1);
+
+            var placeholdersInRow = 0;
+            var placeholdersRowOffset = 0;
+            for (int k = 0; k < regiment.unitsInRegiment.Count; ++k)
+            {
+                var unit = regiment.unitsInRegiment[k];
+
+                var rowStart = link.start + linkLeftNormal * (formationData.betweenRowsDistance * (formationData.rows.Length + placeholdersRowOffset + 1));
+                var rowEnd = link.end + linkLeftNormal * (formationData.betweenRowsDistance * (formationData.rows.Length + placeholdersRowOffset + 1));
+
+                var pos = rowStart + ((placeholdersInRow + 1) * unit.boundsRect.x * 1.6f) * linkDirNormal;
+
+                if ((pos - rowStart).magnitude > (rowEnd - rowStart).magnitude)
+                {
+                    placeholdersRowOffset++;
+                    placeholdersInRow = 0;
+                    rowStart = link.start + linkLeftNormal * (formationData.betweenRowsDistance * (formationData.rows.Length + placeholdersRowOffset + 1));
+                    pos = rowStart + ((placeholdersInRow + 1) * unit.boundsRect.x * 1.6f) * linkDirNormal;
+                }
+
+                var rgPlaceholder = new UnitPlaceholder()
+                {
+                    position = pos,
+                    UnitType = unit.type,
+                    size = new Vector3(unit.boundsRect.y, 1, unit.boundsRect.x),
+                    rotation = Quaternion.LookRotation(linkDirNormal, Vector3.up),
+                    actualUnit = unit,
+                    enemy = false,
+                };
+
+                link.allyPlaceholders.Add(rgPlaceholder);
+                link.filledPlaceholders.Add(rgPlaceholder);
+                allyPlaceholders.Add(rgPlaceholder);
+
+                placeholdersInRow++;
+            }
+        }
     }
 
     private void OnDrawGizmos()
@@ -268,8 +735,16 @@ public class FrontlaneDeployer : MonoBehaviour
             var rotationMatrix = Matrix4x4.TRS(enemyPlaceholders[j].position, enemyPlaceholders[j].rotation, enemyPlaceholders[j].size);
             var matrix = Gizmos.matrix;
             Gizmos.matrix = rotationMatrix;
-            Gizmos.DrawCube(Vector3.one, Vector3.one);
-            Handles.Label(enemyPlaceholders[j].position, $"{enemyPlaceholders[j].UnitType.ToString()}");
+            if(enemyPlaceholders[j].actualUnit == null)
+            {
+                Gizmos.DrawWireCube(Vector3.one, Vector3.one);
+                Handles.Label(enemyPlaceholders[j].position, $"{enemyPlaceholders[j].UnitType.ToString()}");
+            }
+            else
+            {
+                Gizmos.DrawCube(Vector3.one, Vector3.one);
+                Handles.Label(enemyPlaceholders[j].position, $"{enemyPlaceholders[j].UnitType.ToString()} from {enemyPlaceholders[j].actualUnit.regimentName}");
+            }
             Gizmos.matrix = matrix;
         }
         
@@ -279,8 +754,16 @@ public class FrontlaneDeployer : MonoBehaviour
             var rotationMatrix = Matrix4x4.TRS(allyPlaceholders[j].position, allyPlaceholders[j].rotation, allyPlaceholders[j].size);
             var matrix = Gizmos.matrix;
             Gizmos.matrix = rotationMatrix;
-            Gizmos.DrawCube(Vector3.one, Vector3.one);
-            Handles.Label(allyPlaceholders[j].position, $"{allyPlaceholders[j].UnitType.ToString()}");
+            if (allyPlaceholders[j].actualUnit == null)
+            {
+                Gizmos.DrawWireCube(Vector3.one, Vector3.one);
+                Handles.Label(allyPlaceholders[j].position, $"{allyPlaceholders[j].UnitType.ToString()}");
+            }
+            else
+            {
+                Gizmos.DrawCube(Vector3.one, Vector3.one);
+                Handles.Label(allyPlaceholders[j].position, $"{allyPlaceholders[j].UnitType.ToString()} from {allyPlaceholders[j].actualUnit.regimentName}");
+            }
             Gizmos.matrix = matrix;
         }
     }

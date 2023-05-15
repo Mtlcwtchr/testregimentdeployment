@@ -209,6 +209,26 @@ MonoBehaviour:
     boundsRect: {x: 5, y: 1}
     isEnemy: 1
     regimentName: R3
+  - type: 3
+    boundsRect: {x: 1, y: 1}
+    isEnemy: 1
+    regimentName: R3
+  - type: 3
+    boundsRect: {x: 1, y: 1}
+    isEnemy: 1
+    regimentName: R3
+  - type: 3
+    boundsRect: {x: 1, y: 1}
+    isEnemy: 1
+    regimentName: R3
+  - type: 3
+    boundsRect: {x: 1, y: 1}
+    isEnemy: 1
+    regimentName: R3
+  - type: 3
+    boundsRect: {x: 1, y: 1}
+    isEnemy: 1
+    regimentName: R3
   regimentName: R3
   isEnemy: 1
 --- !u!4 &318079066
@@ -257,6 +277,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   battleUnitData: {fileID: 1957652606}
   formationData: {fileID: 8013549440776126423, guid: 0fa9b516798675749b37969a4c1fb8eb, type: 3}
+  enemyToTheLeft: 0
+  maxFillDistance: 60
 --- !u!4 &411086364
 Transform:
   m_ObjectHideFlags: 0
@@ -302,6 +324,89 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1957652607}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &477052720
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 477052722}
+  - component: {fileID: 477052721}
+  m_Layer: 0
+  m_Name: EnemyRegiment2 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &477052721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 477052720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d786da84735646d69148a8eecdc24997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitsInRegiment:
+  - type: 1
+    boundsRect: {x: 5, y: 1}
+    isEnemy: 1
+    regimentName: A2
+  - type: 0
+    boundsRect: {x: 2, y: 1}
+    isEnemy: 1
+    regimentName: A2
+  - type: 1
+    boundsRect: {x: 5, y: 1}
+    isEnemy: 1
+    regimentName: A2
+  - type: 3
+    boundsRect: {x: 1, y: 1}
+    isEnemy: 1
+    regimentName: A2
+  - type: 0
+    boundsRect: {x: 2, y: 1}
+    isEnemy: 1
+    regimentName: A2
+  - type: 0
+    boundsRect: {x: 2, y: 1}
+    isEnemy: 1
+    regimentName: A2
+  - type: 0
+    boundsRect: {x: 2, y: 1}
+    isEnemy: 1
+    regimentName: A2
+  - type: 0
+    boundsRect: {x: 2, y: 1}
+    isEnemy: 1
+    regimentName: A2
+  - type: 1
+    boundsRect: {x: 5, y: 1}
+    isEnemy: 1
+    regimentName: A2
+  regimentName: A2
+  isEnemy: 0
+--- !u!4 &477052722
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 477052720}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -11.1, y: 0, z: -44.78}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
@@ -512,6 +617,109 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1034891116
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1034891118}
+  - component: {fileID: 1034891117}
+  m_Layer: 0
+  m_Name: EnemyRegiment3 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1034891117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034891116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d786da84735646d69148a8eecdc24997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitsInRegiment:
+  - type: 1
+    boundsRect: {x: 5, y: 1}
+    isEnemy: 1
+    regimentName: A3
+  - type: 0
+    boundsRect: {x: 2, y: 1}
+    isEnemy: 1
+    regimentName: A3
+  - type: 1
+    boundsRect: {x: 5, y: 1}
+    isEnemy: 1
+    regimentName: A3
+  - type: 1
+    boundsRect: {x: 5, y: 1}
+    isEnemy: 1
+    regimentName: A3
+  - type: 1
+    boundsRect: {x: 5, y: 1}
+    isEnemy: 1
+    regimentName: A3
+  - type: 3
+    boundsRect: {x: 1, y: 1}
+    isEnemy: 1
+    regimentName: A3
+  - type: 3
+    boundsRect: {x: 1, y: 1}
+    isEnemy: 1
+    regimentName: A3
+  - type: 2
+    boundsRect: {x: 2, y: 2}
+    isEnemy: 1
+    regimentName: A3
+  - type: 0
+    boundsRect: {x: 2, y: 1}
+    isEnemy: 1
+    regimentName: A3
+  - type: 0
+    boundsRect: {x: 2, y: 1}
+    isEnemy: 1
+    regimentName: A3
+  - type: 1
+    boundsRect: {x: 5, y: 1}
+    isEnemy: 1
+    regimentName: A3
+  - type: 1
+    boundsRect: {x: 5, y: 1}
+    isEnemy: 1
+    regimentName: A3
+  - type: 1
+    boundsRect: {x: 5, y: 1}
+    isEnemy: 1
+    regimentName: A3
+  - type: 1
+    boundsRect: {x: 5, y: 1}
+    isEnemy: 1
+    regimentName: A3
+  regimentName: A3
+  isEnemy: 0
+--- !u!4 &1034891118
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034891116}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.81, y: 0, z: -19.47}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1037556751
 GameObject:
   m_ObjectHideFlags: 0
@@ -651,6 +859,10 @@ MonoBehaviour:
     regimentName: R2
   - type: 0
     boundsRect: {x: 2, y: 1}
+    isEnemy: 1
+    regimentName: R2
+  - type: 1
+    boundsRect: {x: 5, y: 1}
     isEnemy: 1
     regimentName: R2
   regimentName: R2
@@ -799,6 +1011,136 @@ Transform:
   m_Father: {fileID: 1957652607}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1885871688
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1885871690}
+  - component: {fileID: 1885871689}
+  m_Layer: 0
+  m_Name: EnemyRegiment1 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1885871689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885871688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d786da84735646d69148a8eecdc24997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitsInRegiment:
+  - type: 1
+    boundsRect: {x: 5, y: 1}
+    isEnemy: 1
+    regimentName: A1
+  - type: 0
+    boundsRect: {x: 2, y: 1}
+    isEnemy: 1
+    regimentName: A1
+  - type: 1
+    boundsRect: {x: 5, y: 1}
+    isEnemy: 1
+    regimentName: A1
+  - type: 1
+    boundsRect: {x: 5, y: 1}
+    isEnemy: 1
+    regimentName: A1
+  - type: 1
+    boundsRect: {x: 5, y: 1}
+    isEnemy: 1
+    regimentName: A1
+  - type: 3
+    boundsRect: {x: 1, y: 1}
+    isEnemy: 1
+    regimentName: A1
+  - type: 3
+    boundsRect: {x: 1, y: 1}
+    isEnemy: 1
+    regimentName: A1
+  - type: 2
+    boundsRect: {x: 2, y: 2}
+    isEnemy: 1
+    regimentName: A1
+  regimentName: A1
+  isEnemy: 0
+--- !u!4 &1885871690
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885871688}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -16.7, y: 0, z: -67.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1927094748
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1927094750}
+  - component: {fileID: 1927094749}
+  m_Layer: 0
+  m_Name: EnemyRegiment4
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1927094749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1927094748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d786da84735646d69148a8eecdc24997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitsInRegiment:
+  - type: 4
+    boundsRect: {x: 1, y: 1}
+    isEnemy: 1
+    regimentName: R5
+  regimentName: R5
+  isEnemy: 1
+--- !u!4 &1927094750
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1927094748}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -42.39, y: 0, z: -59.23}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1953522554
 GameObject:
   m_ObjectHideFlags: 0
@@ -863,6 +1205,10 @@ MonoBehaviour:
   - {fileID: 1037556752}
   - {fileID: 1221837802}
   - {fileID: 318079065}
+  - {fileID: 1885871689}
+  - {fileID: 477052721}
+  - {fileID: 1034891117}
+  - {fileID: 1927094749}
   frontlaneAnchors:
   - {fileID: 1953522555}
   - {fileID: 447042145}
